@@ -45,24 +45,25 @@ http
     let path = parsedURL.pathname;
     let qs = parsedURL.query;
     path = path.replace(/^\/+|\/+$/g, "");
-    console.log(path);
-    console.log(qs);
+    console.log(parsedURL.pathname);
+    let mongoQuery = JSON.parse(JSON.stringify(qs));
+    console.log(mongoQuery);
     if (
       request.method === "GET" &&
-      request.pathname === "/allorders/company/"
+      parsedURL.pathname === "/allorders/company/"
     ) {
       //show all orders from a particular company
-        let data = query_db({companyName:qs.companyName})
-          response.end(JSON.stringify(data));
-    
+      query_db(mongoQuery).then((res, err) => {
+        console.log(res);
+        response.end(res);
+      });
     } else if (
       request.method === "GET" &&
       request.pathname === "/allorders/address/"
     ) {
       // show all orders to a particular address
-     let data = query_db({ customerAdress: qs.customerAdress });
-          response.end(JSON.stringify(data));
-
+      let data = query_db({ customerAdress: qs.customerAdress });
+      response.end(JSON.stringify(data));
     } else if (
       request.method === "DELETE" &&
       request.pathname === "/orders/del_order/"
@@ -95,18 +96,26 @@ http
   })
   .listen(8080);
 
-function query_db(paramObj) {
-  MongoClient.connect(url, function (err, db) {
-    if (err) throw err;
-    var dbo = db.db(dbName);
-    dbo
-      .collection("salesinvoice")
-      .find(paramObj)
-      .toArray(function (err, result) {
-        if (err) throw err;
-        console.log(result);
-        return result;
-        db.close();
-      });
-  });
+async function query_db(paramObj) {
+  MongoClient.connect(
+    url,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    },
+    function (err, db) {
+      if (err) throw err;
+      console.log("passedquery " + JSON.stringify(paramObj));
+      var dbo = db.db(dbName);
+      dbo
+        .collection("salesinvoice")
+        .find(JSON.stringify(paramObj))
+        .toArray(function (err, result) {
+          if (err) throw err;
+          //console.log(result);
+          return result;
+          db.close();
+        });
+    }
+  );
 }
