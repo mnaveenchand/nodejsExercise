@@ -5,20 +5,18 @@ module.exports = http.createServer((req, res) => {
   var CONTROLLER = require("./controller.js"); // importing the main logic
   const reqUrl = url.parse(req.url, true);
 
-  // GET endpoint show all orders
+  // GET endpoint
   if (reqUrl.pathname == "/orders" && req.method === "GET") {
     console.log("Request type: " + req.method + " Endpoint: " + req.url);
     CONTROLLER.getAllOrders(req, res);
-  }
-  // DELETE endpoint to delete a particular order given an OrderId
-  else if (reqUrl.pathname == "/orders" && req.method === "DELETE") {
+  } else if (reqUrl.pathname == "/orders" && req.method === "DELETE") {
     console.log("Request type: " + req.method + " Endpoint: " + req.url);
     CONTROLLER.deleteOrder(req, res);
-  }
-  //GET endpoint to display how often each item has been ordered, in descending order
-  else if (reqUrl.pathname == "/get_order_freq" && req.method === "GET") {
+  } else if (reqUrl.pathname == "/get_order_freq" && req.method === "GET") {
     console.log("Request type: " + req.method + " Endpoint: " + req.url);
     CONTROLLER.getOrderFrequency(req, res);
+  } else if (reqUrl.pathname == "/fileupload" && req.method === "POST") {
+    CONTROLLER.fileUpload(req, res);
   }
   // invalid URL
   else {
