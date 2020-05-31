@@ -34,7 +34,12 @@ client.connect(function (err, client) {
     })
     .on("end", () => {
       // Insert multiple documents
-      db.collection("salesinvoice").createIndex({ orderItem: 1 });
+      db.collection("salesinvoice").createIndex({
+        orderItem: 1,
+        companyName: 1,
+        customerAdress: 1,
+        orderItem: -1,
+      });
       db.collection("salesinvoice").insertMany(results, function (err, r) {
         if (err) console.log(err);
         console.log("inserted");
