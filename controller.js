@@ -12,10 +12,9 @@ function getAllOrders(req, res) {
         res.end(JSON.stringify({ items: data }));
       })
       .catch((err) => {
-        //console.log(err);
         res.statusCode = 400;
         res.setHeader("content-Type", "Application/json");
-        res.end(JSON.stringify({ message: "something went wornd" }));
+        res.end(JSON.stringify({ message: "something went wrong" }));
       });
   } else if (reqUrl.query.companyName) {
     let params = { companyName: decodeURI(reqUrl.query.companyName) };
@@ -26,7 +25,6 @@ function getAllOrders(req, res) {
         res.end(JSON.stringify({ items: data }));
       })
       .catch((err) => {
-        //console.log(err);
         res.statusCode = 400;
         res.setHeader("content-Type", "Application/json");
         res.end(JSON.stringify({ message: "something went wrong" }));
@@ -46,7 +44,6 @@ function deleteOrder(req, res) {
         res.end(JSON.stringify({ success: data }));
       })
       .catch((err) => {
-        //console.log(err);
         res.statusCode = 400;
         res.setHeader("content-Type", "Application/json");
         res.end(JSON.stringify({ message: "something went wrong" }));
@@ -69,17 +66,5 @@ function getOrderFrequency(req, res) {
     });
 }
 
-function fileUpload(req, res) {
-  var form = new formidable.IncomingForm();
-  form.parse(req, function (err, fields, files) {
-    var oldpath = files.filetoupload.path;
-    var newpath = `F:/Development/NodePractice/CodeChallenges/${files.filetoupload.name}`;
-    mv(oldpath, newpath, function (err) {
-      if (err) throw err;
-      res.write("File uploaded and updated database!");
-      res.end();
-    });
-  });
-}
 
-module.exports = { getAllOrders, deleteOrder, getOrderFrequency, fileUpload };
+module.exports = { getAllOrders, deleteOrder, getOrderFrequency };

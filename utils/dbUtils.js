@@ -4,7 +4,7 @@ const urlMongo = "mongodb://localhost:27017/";
 var _db;
 
 module.exports = {
-  connectToServer: function (callback) {
+  connectToServer: (callback) =>{
     MongoClient.connect(urlMongo,{
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -14,7 +14,7 @@ module.exports = {
     });
   },
   
-  getDb: function () {
+  getDb:  () => {
     return _db;
   },
 };

@@ -3,13 +3,11 @@ var dbInstance = DbConnection.getDb();
 
 function query_db(paramObj) {
   return new Promise((resolve, reject) => {
-    //console.log("passedquery " + paramObj);
     dbInstance
       .collection("salesinvoice")
       .find(paramObj)
-      .toArray(function (err, res) {
+      .toArray((err, res) => {
         if (err) reject(err);
-        //console.log(res);
         resolve(res);
       });
   });
@@ -17,10 +15,9 @@ function query_db(paramObj) {
 
 function deleteSalesOrder(orderObj) {
   return new Promise((resolve, reject) => {
-    //console.log("passed Query: " + orderObj);
     dbInstance
       .collection("salesinvoice")
-      .deleteMany(orderObj, function (err, result) {
+      .deleteMany(orderObj, (err, result) => {
         if (err) reject(err);
         resolve(result);
       });
@@ -34,10 +31,10 @@ function findOrderFrequency() {
       .aggregate([
         { $unwind: "$orderedItem" },
         { $sortByCount: "$orderedItem" },
+        { $limit: 10 },
       ])
-      .toArray(function (err, result) {
+      .toArray((err, result) => {
         if (err) reject(err);
-        //console.log(result);
         resolve(result);
       });
   });

@@ -20,17 +20,11 @@ const client = new MongoClient(url, {
 });
 client.connect(function (err, client) {
   if (err) console.log(err);
-  console.log("Connected correctly to server");
-
   const db = client.db(dbName);
-  fs.createReadStream("salesorders.csv")
+  fs.createReadStream("sales.csv")
     .pipe(csv())
     .on("data", (data) => {
-      let obj = {};
-      Object.keys(data).forEach((key) => {
-        obj[key.trim()] = data[key].trim();
-      });
-      results.push(obj);
+      results.push(data);
     })
     .on("end", () => {
       // Insert multiple documents
@@ -42,7 +36,6 @@ client.connect(function (err, client) {
       });
       db.collection("salesinvoice").insertMany(results, function (err, r) {
         if (err) console.log(err);
-        console.log("inserted");
       });
     });
 });
