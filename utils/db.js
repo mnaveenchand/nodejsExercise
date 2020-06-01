@@ -5,7 +5,7 @@ function query_db(paramObj) {
   return new Promise((resolve, reject) => {
     dbInstance
       .collection("salesinvoice")
-      .find(paramObj)
+      .find(paramObj).limit(20)
       .toArray((err, res) => {
         if (err) reject(err);
         resolve(res);

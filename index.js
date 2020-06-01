@@ -1,4 +1,4 @@
-var mongodbutil = require("./utils/dbUtils");
+var DbConnection = require("./utils/dbUtils");
 const hostname = "127.0.0.1";
 const port = 3000;
 const csv = require("csv-parser");
@@ -40,7 +40,7 @@ client.connect(function (err, client) {
     });
 });
 
-mongodbutil.connectToServer(function (err) {
+DbConnection.connectToServer(function (err) {
   if (err) console.log(err);
   const server = require("./route.js"); // imports the routing file
   server.listen(port, hostname, () => {
