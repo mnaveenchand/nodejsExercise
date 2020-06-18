@@ -3,33 +3,23 @@ const DB = require("./utils/db");
 
 function getAllOrders(req, res) {
   const reqUrl = url.parse(req.url, true);
+  let params = {};
   if (reqUrl.query.customerAdress) {
-    let params = { customerAdress: decodeURI(reqUrl.query.customerAdress) };
-    DB.query_db(params)
-      .then((data) => {
-        res.statusCode = 200;
-        res.setHeader("content-Type", "Application/json");
-        res.end(JSON.stringify({ items: data }));
-      })
-      .catch((err) => {
-        res.statusCode = 400;
-        res.setHeader("content-Type", "Application/json");
-        res.end(JSON.stringify({ message: "something went wrong" }));
-      });
+    params = { customerAdress: decodeURI(reqUrl.query.customerAdress) };
   } else if (reqUrl.query.companyName) {
-    let params = { companyName: decodeURI(reqUrl.query.companyName) };
-    DB.query_db(params)
-      .then((data) => {
-        res.statusCode = 200;
-        res.setHeader("content-Type", "Application/json");
-        res.end(JSON.stringify({ items: data }));
-      })
-      .catch((err) => {
-        res.statusCode = 400;
-        res.setHeader("content-Type", "Application/json");
-        res.end(JSON.stringify({ message: "something went wrong" }));
-      });
+    params = { companyName: decodeURI(reqUrl.query.companyName) };
   }
+   DB.query_db(params)
+     .then((data) => {
+       res.statusCode = 200;
+       res.setHeader("content-Type", "Application/json");
+       res.end(JSON.stringify({ items: data }));
+     })
+     .catch((err) => {
+       res.statusCode = 400;
+       res.setHeader("content-Type", "Application/json");
+       res.end(JSON.stringify({ message: "something went wrong" }));
+     });
 }
 
 function deleteOrder(req, res) {

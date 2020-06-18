@@ -14,5 +14,8 @@
     "formidable": "^1.2.2",
     "mongodb": "^3.5.7",
     "mv": "^2.1.1"
+  },
+  "devDependencies": {
+    "jest": "^26.0.1"
   }
 }
